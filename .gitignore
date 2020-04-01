@@ -1,7 +1,7 @@
-.DS_Store/
-node_modules/
+.DS_Store
+node_modules
 .env
-cypress/
+cypress
 !cypress/integration/
-dist/*
+dist
 logins.txt
