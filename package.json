@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "A simple webshop",
   "main": "index.js",
+  "engines": {
+      "node": "13.12.0"
+    },
   "scripts": {
     "unittest": "mocha",
     "cypress": "cypress open",
