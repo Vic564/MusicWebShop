@@ -1,22 +1,8 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
-const {
-    app,
-    PORT
-} = require('./src/server')
-const config = require('./config/config')
+const {app} = require('./src/server')
+const {MONGODB, PORT} = require('./config/config')
 
-const dbOptions = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true
-}
-
-mongoose.connect(config.mongoDB.databaseUrl, dbOptions).then(() => {
+mongoose.connect(MONGODB.connection, MONGODB.options).then(() => {
     app.listen(PORT, () => console.log(`App listening on port ${PORT}!`))
 })
-
-module.exports = {
-    app,
-    PORT
-}

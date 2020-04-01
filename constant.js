@@ -35,7 +35,7 @@ const ROUTE = {
 
 const PRODUCT = {
     perPage: 4,
-    genres: ["All", "Rock", "Pop", "Soul", "Rap", "Rnb", "Blues"]
+    genres: ["Rock", "Pop", "Soul", "Rap", "Rnb", "Blues"]
 }
 
 module.exports = {

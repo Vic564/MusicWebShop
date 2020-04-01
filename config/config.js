@@ -1,7 +1,29 @@
 require('dotenv').config();
 
-const mongoDB = {
-    databaseUrl: process.env.MONGO_DB
+const validPort = (port) => {
+    const regex = new RegExp('^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$');
+    return regex.test(port);
+};
+
+const PORT = validPort(process.env.PORT) ? parseInt(process.env.PORT) : 8080;
+
+const mongodb = process.env.MONGODB || 'mongodb';
+const dbUser = process.env.DBUSER || 'test';
+const dbPassword = process.env.DBPASSWORD || 'test';
+const dbHostname = process.env.DBHOSTNAME || 'localhost';
+const dbName = process.env.DBNAME || 'todolistapp';
+const dbQuery = process.env.DBQUERY || '';
+const dbAuth = (process.env.DBAUTH == 'true') ? true : false;
+
+const MONGODB = {
+    connection: dbAuth
+    ? `${mongodb}://${dbUser}:${dbPassword}@${dbHostname}/${dbName}?${dbQuery}`
+    : `${mongodb}://${dbHostname}/${dbName}?${dbQuery}`,
+    options: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    }
 }
 
 const spotify = {
@@ -23,4 +45,4 @@ const admin = {
 }
 
 
-module.exports = { mongoDB, spotify, mailkey, tokenkey, admin };  
+module.exports = { MONGODB, spotify, mailkey, tokenkey, admin, PORT };  

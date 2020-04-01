@@ -28,41 +28,37 @@ router.get(ROUTE.product, async (req, res) => {
 })
 
 router.get(ROUTE.gallery, async (req, res) => {
-    if (Object.keys(req.query).length === 0) {
+    if (!req.query.page) {
+        req.query.page = 1;
         res.redirect(url.format({
             pathname: ROUTE.gallery,
-            query: {
-                "genre": "All",
-                "page": 1
-            }
+            query: req.query
         }));
     } else {
-        validatePage(req.query)
-            .then(async query => {
-                return await validateGenre(query);
-            })
-            .then(async queryObject => {
-                return await getData(queryObject, req.cookies.jsonwebtoken);
-            })
-            .then(async object => {
-                res.render(VIEW.gallery, object);
-            })
-            .catch(error => {
-                console.error(error);
-                res.redirect(url.format({
-                    pathname: ROUTE.error,
-                    query: {
-                        errmsg: error.errmsg
-                    }
-                }));
-            });
+        handleQuery(req.query, req.cookies.jsonwebtoken)
+            .then(object => res.render(VIEW.gallery, object))
+            .catch(error => res.redirect(url.format({
+                pathname: ROUTE.error,
+                query: {
+                    errmsg: error.errmsg
+                }
+            })));
     }
 })
 
-const validatePage = async (query) => {
+const handleQuery = async (query, token) => {
     return new Promise(async (resolve, reject) => {
-        if (Number.isInteger(+query.page)) {
-            resolve(query);
+        pageIsInteger(query.page)
+            .then(() => createFilter(query))
+            .then(queryObject => resolve(getData(queryObject, token)))
+            .catch(error => reject(error));
+    });
+}
+
+const pageIsInteger = async (page) => {
+    return new Promise(async (resolve, reject) => {
+        if (Number.isInteger(+page)) {
+            resolve();
         } else {
             let error = new Error();
             error.name = "Invalid Query";
@@ -73,58 +69,48 @@ const validatePage = async (query) => {
     })
 }
 
-const validateGenre = async (query) => {
+const createFilter = async (query) => {
     return new Promise(async (resolve, reject) => {
-        if (query.genre !== undefined) {
-            let correct = true;
-            const genres = query.genre.split(",");
-            for (const genre of genres) {
-                if (!PRODUCT.genres.includes(genre)) {
-                    correct = false;
-                    break;
-                }
-            }
-            if (correct) {
-                const queryObject = {
-                    genres: genres,
-                    page: +query.page
-                }
-                resolve(queryObject);
-            } else {
-                let error = new Error();
-                error.name = "Invalid Query";
-                error.description = "genre does not exist";
-                error.errmsg = "Kunde inte hitta sidan";
-                reject(error);
-            }
-        } else {
-            let error = new Error();
-            error.name = "Invalid Query";
-            error.description = "genre is undefined";
-            error.errmsg = "Kunde inte hitta sidan";
-            reject(error);
+        let filter = {};
+        if (query.genre) {
+            filter.genre = {
+                "$regex": query.genre.replace(",", "|"),
+                "$options": "i"
+            };
         }
+        if (query.artist) {
+            filter.artist = {
+                "$regex": query.artist.replace(",", "|"),
+                "$options": "i"
+            };
+        }
+        if (query.album) {
+            filter.album = {
+                "$regex": query.album.replace(",", "|"),
+                "$options": "i"
+            };
+        }
+        resolve({
+            page: +query.page,
+            filter: filter
+        });
     })
 }
 
 const getData = async (queryObject, token) => {
     return new Promise(async (resolve, reject) => {
         const page = queryObject.page;
-        const genres = queryObject.genres;
-        let productAmount = 0;
-        for (const genre of genres) {
-            productAmount += await Product.find({ genre: genre }).countDocuments();
-        }
+        const filter = queryObject.filter;
+        const productAmount = await Product.find(filter).countDocuments();
         const pageAmount = Math.ceil(productAmount / PRODUCT.perPage);
         if ((page >= 1) && (page <= pageAmount)) {
-            const perGenre = Math.ceil(PRODUCT.perPage / genres.length);
-            let productList = [];
-            for (const genre of genres) {
-                productList = productList.concat(await Product.find({ genre: genre }).skip(perGenre * (page - 1)).limit(perGenre));
+            const productList = await Product.find(filter).skip(PRODUCT.perPage * (page - 1)).limit(PRODUCT.perPage)
+            let search = [];
+            for (const [key, value] of Object.entries(filter)) {
+                search.push(`${key}=${value.$regex.replace("|", ",")}`)
             }
-            const genreString = genres.toString();
             resolve({
-                token: (token !== undefined) ? true : false,
+                token: token ? true : false,
                 productList,
                 productAmount,
                 currentPage: page,
@@ -136,8 +122,14 @@ const getData = async (queryObject, token) => {
                 previousPage: page - 1,
                 lastPage: pageAmount,
                 ROUTE: ROUTE,
-                genre: genreString
+                search: search.join("&")
             });
+        } else if (productAmount < 1) {
+            let error = new Error();
+            error.name = "Invalid Query";
+            error.description = "no hits in database";
+            error.errmsg = "Inga träffar för din sökning";
+            reject(error);
         } else {
             let error = new Error();
             error.name = "Invalid Query";

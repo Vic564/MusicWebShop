@@ -75,7 +75,7 @@ router.post(ROUTE.admin, verifyAdminToken, (req, res) => {
 })
 
 router.post(ROUTE.adminAddProduct, verifyAdminToken, async (req, res) => {
-    let genres = ["All"];
+    let genres = [];
     for (const property in req.body) {
         if (property.includes("genre")) {
             genres.push(property.replace("genre", ""));
