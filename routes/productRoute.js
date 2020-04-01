@@ -69,19 +69,19 @@ const createFilter = async (query) => {
     let filter = {};
     if (query.genre) {
         filter.genre = {
-            "$regex": query.genre.replace(QUERY_SEPARATOR, "|"),
+            "$regex": query.genre.replace(QUERY_SEPARATOR.sep.regex, QUERY_SEPARATOR.or.str),
             "$options": "i"
         };
     }
     if (query.artist) {
         filter.artist = {
-            "$regex": query.artist.replace(QUERY_SEPARATOR, "|"),
+            "$regex": query.artist.replace(QUERY_SEPARATOR.sep.regex, QUERY_SEPARATOR.or.str),
             "$options": "i"
         };
     }
     if (query.album) {
         filter.album = {
-            "$regex": query.album.replace(QUERY_SEPARATOR, "|"),
+            "$regex": query.album.replace(QUERY_SEPARATOR.sep.regex, QUERY_SEPARATOR.or.str),
             "$options": "i"
         };
     }
@@ -100,7 +100,7 @@ const getData = async (queryObject, token) => {
             const productList = await Product.find(filter).skip(PRODUCT.perPage * (page - 1)).limit(PRODUCT.perPage)
             let search = [];
             for (const [key, value] of Object.entries(filter)) {
-                search.push(`${key}=${value.$regex.replace("|", QUERY_SEPARATOR)}`)
+                search.push(`${key}=${value.$regex.replace(QUERY_SEPARATOR.or.regex, QUERY_SEPARATOR.sep.str)}`)
             }
             return {
                 token: token ? true : false,

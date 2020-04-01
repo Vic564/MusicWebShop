@@ -39,7 +39,16 @@ const PRODUCT = {
     genres: ["Rock", "Pop", "Soul", "Rap", "Rnb", "Blues", "Disco", "Jazz", "Classic"]
 }
 
-const QUERY_SEPARATOR = ',';
+const QUERY_SEPARATOR = {
+    sep: {
+        str: ',',
+        regex: /,/g
+    },
+    or: {
+        str: '|',
+        regex: /\|/g
+    }
+}
 
 module.exports = {
     VIEW,
