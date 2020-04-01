@@ -27,7 +27,8 @@ const ROUTE = {
     wishlistId: '/wishlist/:id',
     checkout: '/checkout',
     confirmation: '/checkout/confirmation',
-    error: '/*',
+    error: '/error',
+    wildcard: '/*',
     resetpassword: '/resetpassword',
     resetpasswordToken: '/resetpassword/:token', 
     wishlistRemoveId: '/remove/:id'

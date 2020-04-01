@@ -49,8 +49,8 @@ router.get(ROUTE.gallery, async (req, res) => {
 const handleQuery = async (query, token) => {
     return pageIsInteger(query.page)
         .then(() => createFilter(query))
-        .then(queryObject => resolve(getData(queryObject, token)))
-        .catch(error => reject(error));
+        .then(queryObject => getData(queryObject, token))
+        .catch(error => {throw error});
 }
 
 const pageIsInteger = async (page) => {
@@ -122,7 +122,7 @@ const getData = async (queryObject, token) => {
             error.name = "Invalid Query";
             error.description = "no hits in database";
             error.errmsg = "Inga träffar för din sökning";
-            reject(error);
+            throw error;
         } else {
             let error = new Error();
             error.name = "Invalid Query";
