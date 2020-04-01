@@ -32,9 +32,8 @@
 }
 
 @mixin buttonShapeBig {
-    width: 200px;
-    border: none; 
-    border-radius: $roundedBig;
+    padding: 12px 16px;
+    border: 1px solid $colorFourth;
 }
 
 @mixin inputfieldStyle {

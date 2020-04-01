@@ -1,6 +1,6 @@
 html body footer {
-    background-color: $colorSecond;
-
+    margin-top: 12px;
+    border-top: 1px solid $colorThird;
     .footer-content {
         margin: 20px;
         flex-shrink: 0;
@@ -13,14 +13,13 @@ html body footer {
             margin-left: 2.5rem;
 
             a {
-
-                color: $colorMain;
+                color: $colorThird;
             }
         }
 
         p {
             font-family: $textFontStandard;
-            color: $colorMain;
+            color: $colorThird;
             margin-left: 2.5rem;
         }
 
@@ -30,8 +29,7 @@ html body footer {
             font-family: $textFontStandard;
 
             a {
-                color: black;
-
+                color: $colorSecond;
                 &:hover {
                     color: $colorFourth
                 }

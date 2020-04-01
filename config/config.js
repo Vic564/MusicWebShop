@@ -12,7 +12,7 @@ const dbUser = process.env.DBUSER || 'test';
 const dbPassword = process.env.DBPASSWORD || 'test';
 const dbHostname = process.env.DBHOSTNAME || 'localhost';
 const dbName = process.env.DBNAME || 'todolistapp';
-const dbQuery = process.env.DBQUERY || '';
+const dbQuery = process.env.DBQUERY || 'retryWrites=true&w=majority';
 const dbAuth = (process.env.DBAUTH == 'true') ? true : false;
 
 const MONGODB = {
@@ -27,21 +27,21 @@ const MONGODB = {
 }
 
 const spotify = {
-    client_id: process.env.SPOTIFY_CLIENT_ID,
-    client_secret: process.env.SPOTIFY_CLIENT_SECRET
+    client_id: process.env.SPOTIFY_CLIENT_ID || 'needsconfig',
+    client_secret: process.env.SPOTIFY_CLIENT_SECRET || 'needsconfig'
 }
 
 const mailkey = {
-    mailkey: process.env.SEND_GRID_KEY
+    mailkey: process.env.SEND_GRID_KEY || 'needsconfig'
 }
 
 const tokenkey = {
-    adminjwt: process.env.ADMIN_TOKEN,
-    userjwt: process.env.USER_TOKEN,
+    adminjwt: process.env.ADMIN_TOKEN || 'admintoken',
+    userjwt: process.env.USER_TOKEN || 'usertoken'
 }
 
 const admin = {
-    adminPassword: process.env.ADMIN_PASSWORD
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin'
 }
 
 
