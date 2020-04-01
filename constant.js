@@ -38,8 +38,11 @@ const PRODUCT = {
     genres: ["Rock", "Pop", "Soul", "Rap", "Rnb", "Blues"]
 }
 
+const QUERY_SEPARATOR = ',';
+
 module.exports = {
     VIEW,
     ROUTE,
-    PRODUCT
+    PRODUCT,
+    QUERY_SEPARATOR
 }
