@@ -36,7 +36,7 @@ const ROUTE = {
 
 const PRODUCT = {
     perPage: 4,
-    genres: ["Rock", "Pop", "Soul", "Rap", "Rnb", "Blues"]
+    genres: ["Rock", "Pop", "Soul", "Rap", "Rnb", "Blues", "Disco", "Jazz", "Classic"]
 }
 
 const QUERY_SEPARATOR = ',';

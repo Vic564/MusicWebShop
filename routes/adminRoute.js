@@ -38,7 +38,7 @@ router.post(ROUTE.admin, verifyAdminToken, (req, res) => {
             if (!error && response.statusCode === 200) {
                 var spotifyToken = body.access_token;
                 var options = {
-                    url: `https://api.spotify.com/v1/search?q=album:${albumSearchValue}%20artist:${artistSearchValue}&type=album&q=`,
+                    url: `https://api.spotify.com/v1/search?q=artist:${artistSearchValue}&type=album&album_type=SINGLE&offset=0&limit=10`,
                     headers: {
                         Authorization: 'Bearer ' + spotifyToken,
                         Accept: 'application/json',
