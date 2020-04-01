@@ -7,7 +7,7 @@
     "node": "x.x.x"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node dist/index.js",
     "start-dev": "nodemon index.js",
     "fresh": "npm cache clean --force && rm -rf node_modules && rm -f package-lock.json && npm i",
     "update": "ncu -u && npm update && npm i",
