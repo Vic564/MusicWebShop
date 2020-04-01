@@ -7,7 +7,7 @@
         </span>
         <% } %>
         <% if (!isFirst && !isSecond) { %>
-        <a href="<%= ROUTE.gallery %>?search=<%= search %>&page=<%= 1 %>">
+        <a href="<%= ROUTE.gallery %>?<%= search %>&page=<%= 1 %>">
             <i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i>
         </a>
         <% } %>
@@ -17,11 +17,11 @@
         </span>
         <% } %>
         <% if (!isFirst) { %>
-        <a href="<%= ROUTE.gallery %>?search=<%= search %>&page=<%= previousPage %>">
+        <a href="<%= ROUTE.gallery %>?<%= search %>&page=<%= previousPage %>">
             <i class="fa fa-angle-left"></i>
         </a>
         <% } %>
-        <a href="<%= ROUTE.gallery %>?search=<%= search %>&page=<%= currentPage %>">
+        <a href="<%= ROUTE.gallery %>?<%= search %>&page=<%= currentPage %>">
             <%= currentPage %>/<%= lastPage %>
         </a>
         <% if (isLast) { %>
@@ -30,7 +30,7 @@
         </span>
         <% } %>
         <% if (!isLast) { %>
-        <a href="<%= ROUTE.gallery %>?search=<%= search %>&page=<%= nextPage %>">
+        <a href="<%= ROUTE.gallery %>?<%= search %>&page=<%= nextPage %>">
             <i class="fa fa-angle-right"></i>
         </a>
         <% } %>
@@ -40,7 +40,7 @@
         </span>
         <% } %>
         <% if (!isLast && !isSecondLast) { %>
-        <a href="<%= ROUTE.gallery %>?search=<%= search %>&page=<%= lastPage %>">
+        <a href="<%= ROUTE.gallery %>?<%= search %>&page=<%= lastPage %>">
             <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
         </a>
         <% } %>

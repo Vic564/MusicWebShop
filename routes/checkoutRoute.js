@@ -12,12 +12,12 @@ router.get(ROUTE.checkout, verifyToken, async (req, res) => {
                 album: 1,
                 price: 1
             })
-        res.status(202).render(VIEW.checkout, { ROUTE, showUserInfo, token: (req.cookies.jsonwebtoken !== undefined) ? true : false })
+        res.status(202).render(VIEW.checkout, { ROUTE, showUserInfo, token: req.cookies.jsonwebtoken ? true : false })
     } else {
         return res.status(202).render(VIEW.checkout, {
             ROUTE,
             showUserInfo: "empty cart",
-            token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+            token: req.cookies.jsonwebtoken ? true : false
         })
     }
 })
@@ -32,7 +32,7 @@ router.post(ROUTE.checkout, verifyToken, (req, res) => {
     }
     res.render(VIEW.confirmation, {
         customer,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     });
 })
 

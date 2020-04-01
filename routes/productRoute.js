@@ -18,13 +18,16 @@ router.get(ROUTE.index, async (req, res) => {
     res.render(VIEW.index, {
         displayList: displayList,
         productListRoute: ROUTE.gallery,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken  ? true : false
     });
 })
 
 router.get(ROUTE.product, async (req, res) => {
     const oneProduct = await Product.findById({ _id: req.params.id });
-    res.render(VIEW.product, { oneProduct, token: (req.cookies.jsonwebtoken !== undefined) ? true : false });
+    res.render(VIEW.product, {
+        oneProduct,
+        token: req.cookies.jsonwebtoken ? true : false
+    });
 })
 
 router.get(ROUTE.gallery, async (req, res) => {

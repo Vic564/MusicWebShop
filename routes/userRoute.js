@@ -23,7 +23,7 @@ const transport = nodemailer.createTransport(sendgridTransport({
 router.get(ROUTE.createUser, (req, res) => {
     res.status(200).render(VIEW.createUser, {
         ROUTE,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     });
 
 })
@@ -69,7 +69,7 @@ router.post(ROUTE.createUser, async (req, res) => {
         const validUser = await bcrypt.compare(req.body.password, userInfo.password);
         if (!validUser) return res.render("errors", {
             errmsg: 'Fel lösenord!',
-            token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+            token: req.cookies.jsonwebtoken ? true : false
         });
         const tokenSignature = userInfo.isAdmin ? config.tokenkey.adminjwt : config.tokenkey.userjwt;
         jwt.sign({
@@ -77,7 +77,7 @@ router.post(ROUTE.createUser, async (req, res) => {
         }, tokenSignature, (err, token) => {
             if (err) return res.render('errors', {
                 errmsg: 'token funkar inte',
-                token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+                token: req.cookies.jsonwebtoken ? true : false
             });
             if (token) {
                 const cookie = req.cookies.jsonwebtoken;
@@ -96,7 +96,7 @@ router.post(ROUTE.createUser, async (req, res) => {
 router.get(ROUTE.login, async (req, res) => {
     res.status(200).render(VIEW.login, {
         ROUTE,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     });
 })
 
@@ -161,7 +161,7 @@ router.get(ROUTE.userAccount, verifyToken, async (req, res) => {
         ROUTE,
         loggedIn,
         user,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false,
+        token: req.cookies.jsonwebtoken ? true : false,
         passwordChanged: {
             exists: req.query.passwordChanged ? true : false,
             value: (req.query.passwordChanged == 'true') ? true : false
@@ -240,7 +240,7 @@ router.get(ROUTE.wishlistRemoveId, verifyToken, async (req, res) => {
 router.get(ROUTE.resetpassword, (req, res) => {
     res.status(200).render(VIEW.resetpassword, {
         ROUTE,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     });
 })
 
@@ -277,7 +277,7 @@ router.get(ROUTE.resetpasswordToken, async (req, res) => {
     res.render(VIEW.resetform, {
         user,
         ROUTE,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     })
 })
 

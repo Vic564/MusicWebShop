@@ -12,7 +12,7 @@ router.get(ROUTE.admin, verifyAdminToken, async (req, res) => {
     res.render(VIEW.admin, {
         productList,
         ROUTE,
-        token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+        token: req.cookies.jsonwebtoken ? true : false
     })
 })
 
@@ -64,7 +64,7 @@ router.post(ROUTE.admin, verifyAdminToken, (req, res) => {
                             userInfo: userInfo,
                             spotifyResponse: spotifyResponse,
                             genres: genres,
-                            token: (req.cookies.jsonwebtoken !== undefined) ? true : false
+                            token: req.cookies.jsonwebtoken ? true : false
                         });
                     }
                 });
