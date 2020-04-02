@@ -28,7 +28,7 @@
         </script>
         <% productList.forEach((product)=>{ %>
         <li class="product-display">
-            <div class="product-image-container"><img src="<%= product.imgUrl %>"></div>
+            <div class="product-image-container"><a href="<%= ROUTE.gallery %>/<%= product._id%>"><img src="<%= product.imgUrl %>"></a></div>
             <div class="product-info-container">
                 <div class="product-info-left">
                     <div class="product-artist"><%= product.artist %></div>
@@ -42,9 +42,6 @@
                     <button id='cart-button-<%= product._id %>' onclick="clickMe(this);" class="add-to-cart-button">KÖP</button>
                     <a href="/wishlist/<%= product._id %>">
                         <button class="add-to-cart-button">SPARA</button>
-                    </a>
-                    <a href="<%= ROUTE.gallery %>/<%= product._id%>">
-                        <button id="show-product-button">INFO</button>
                     </a>
                 </div>
             </div>
