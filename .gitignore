@@ -3,5 +3,4 @@ node_modules
 .env
 cypress
 !cypress/integration/
-dist
 logins.txt

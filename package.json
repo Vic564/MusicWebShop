@@ -16,7 +16,7 @@
     "cypress": "cypress open",
     "cy:run": "cypress run -- --record --spec 'cypress/integration/todo_ui_spec.js'",
     "test": "npm run unittest & npm run cy:run",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./test,./npm-debug.log --copy-files,./sass",
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./cypress,./test,./npm-debug.log --copy-files,./sass",
     "sass": "node-sass --watch sass -o public",
     "heroku": "heroku"
   },
