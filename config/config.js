@@ -28,7 +28,13 @@ const MONGODB = {
 
 const spotify = {
     client_id: process.env.SPOTIFY_CLIENT_ID || 'needsconfig',
-    client_secret: process.env.SPOTIFY_CLIENT_SECRET || 'needsconfig'
+    client_secret: process.env.SPOTIFY_CLIENT_SECRET || 'needsconfig',
+    query: {
+        type: 'album',
+        albumType: 'SINGLE',
+        offset: 0,
+        limit: 10
+    }
 }
 
 const mailkey = {
