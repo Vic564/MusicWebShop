@@ -20,11 +20,17 @@ module.exports = (req, res, next) => {
             }
         })
     } else {
-        res.redirect(url.format({
-            pathname: ROUTE.error,
-            query: {
-                errmsg: 'Du är inte inloggad!'
-            }
-        }));
+        if((req.url === ROUTE.order) && (req.method === 'POST')) {
+            res.status(401).json({
+                "answer": "Not authorized"
+            })
+        } else {
+            res.redirect(url.format({
+                pathname: ROUTE.error,
+                query: {
+                    errmsg: 'Du är inte inloggad!'
+                }
+            }));
+        }
     }
 }

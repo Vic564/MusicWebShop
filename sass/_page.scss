@@ -296,9 +296,10 @@ html {
 
                     .wishlist-shoppingcart-innercontiner {
                         align-self: center;
-                        margin: 8px;
+                        padding: 16px;
                         @include flexRowCenter;
                         width: 70%;
+                        border-bottom: 1px solid $colorThird;
 
                         .wishlist-shoppingcart-info {
                             display: flex;
@@ -311,7 +312,10 @@ html {
                                 color: $colorSecond;
                             }
                         }
-
+                    }
+                    .wishlist-shoppingcart-total {
+                        text-align: center;
+                        margin-top: 16px;
                     }
                 }
 

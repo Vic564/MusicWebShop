@@ -6,6 +6,26 @@
     </p>
     <%- include ("pagination.ejs") %>
     <ul class="product-list">
+        <script>
+            const clickMe = async (button) => {
+                const id = button.id.replace('cart-button-', '')
+                try {
+                    const response = await fetch('/order', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            productId: id
+                        })
+                    });
+                    console.log(await response.json());
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        </script>
         <% productList.forEach((product)=>{ %>
         <li class="product-display">
             <div class="product-image-container"><img src="<%= product.imgUrl %>"></div>
@@ -19,6 +39,7 @@
                     </div>
                 </div>
                 <div class="product-info-right">
+                    <button id='cart-button-<%= product._id %>' onclick="clickMe(this);" class="add-to-cart-button">KÖP</button>
                     <a href="/wishlist/<%= product._id %>">
                         <button class="add-to-cart-button">SPARA</button>
                     </a>

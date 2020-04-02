@@ -95,44 +95,44 @@ const createFilter = async (query) => {
 }
 
 const getData = async (queryObject, token) => {
-        const page = queryObject.page;
-        const filter = queryObject.filter;
-        const productAmount = await Product.find(filter).countDocuments();
-        const pageAmount = Math.ceil(productAmount / PRODUCT.perPage);
-        if ((page >= 1) && (page <= pageAmount)) {
-            const productList = await Product.find(filter).skip(PRODUCT.perPage * (page - 1)).limit(PRODUCT.perPage)
-            let search = [];
-            for (const [key, value] of Object.entries(filter)) {
-                search.push(`${key}=${value.$regex.replace(QUERY_SEPARATOR.or.regex, QUERY_SEPARATOR.sep.str)}`)
-            }
-            return {
-                token: token ? true : false,
-                productList,
-                productAmount,
-                currentPage: page,
-                isFirst: page <= 1,
-                isSecond: page === 2,
-                isLast: page === pageAmount,
-                isSecondLast: page === (pageAmount - 1),
-                nextPage: page + 1,
-                previousPage: page - 1,
-                lastPage: pageAmount,
-                ROUTE: ROUTE,
-                search: search.join("&")
-            };
-        } else if (productAmount < 1) {
-            let error = new Error();
-            error.name = "Invalid Query";
-            error.description = "no hits in database";
-            error.errmsg = "Inga träffar för din sökning";
-            throw error;
-        } else {
-            let error = new Error();
-            error.name = "Invalid Query";
-            error.description = "page is not within range";
-            error.errmsg = "Kunde inte hitta sidan";
-            throw error;
+    const page = queryObject.page;
+    const filter = queryObject.filter;
+    const productAmount = await Product.find(filter).countDocuments();
+    const pageAmount = Math.ceil(productAmount / PRODUCT.perPage);
+    if ((page >= 1) && (page <= pageAmount)) {
+        const productList = await Product.find(filter).skip(PRODUCT.perPage * (page - 1)).limit(PRODUCT.perPage)
+        let search = [];
+        for (const [key, value] of Object.entries(filter)) {
+            search.push(`${key}=${value.$regex.replace(QUERY_SEPARATOR.or.regex, QUERY_SEPARATOR.sep.str)}`)
         }
+        return {
+            token: token ? true : false,
+            productList,
+            productAmount,
+            currentPage: page,
+            isFirst: page <= 1,
+            isSecond: page === 2,
+            isLast: page === pageAmount,
+            isSecondLast: page === (pageAmount - 1),
+            nextPage: page + 1,
+            previousPage: page - 1,
+            lastPage: pageAmount,
+            ROUTE: ROUTE,
+            search: search.join("&")
+        };
+    } else if (productAmount < 1) {
+        let error = new Error();
+        error.name = "Invalid Query";
+        error.description = "no hits in database";
+        error.errmsg = "Inga träffar för din sökning";
+        throw error;
+    } else {
+        let error = new Error();
+        error.name = "Invalid Query";
+        error.description = "page is not within range";
+        error.errmsg = "Kunde inte hitta sidan";
+        throw error;
+    }
 }
 
 module.exports = router;

@@ -25,6 +25,7 @@ const ROUTE = {
     gallery: '/gallery',
     product: '/gallery/:id',
     wishlistId: '/wishlist/:id',
+    order: '/order',
     checkout: '/checkout',
     confirmation: '/checkout/confirmation',
     error: '/error',

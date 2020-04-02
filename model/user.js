@@ -33,7 +33,13 @@ const schemaUser = new Schema({
     wishlist: [{
         productId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Product" //det som exporteras i product-model 
+            ref: "Product"
+        }
+    }],
+    cart: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product"
         }
     }]
 })
@@ -46,6 +52,17 @@ schemaUser.methods.addToWishlist = function (product) {
         return !this.has(`${productId}`) && this.add(`${productId}`)
     }, new Set)
     this.wishlist = [...filter]
+    return this.save();
+}
+
+schemaUser.methods.addToCart = function (product) {
+    this.cart.push({ productId: product._id })
+    const filter = this.cart.filter(function ({
+        productId
+    }) {
+        return !this.has(`${productId}`) && this.add(`${productId}`)
+    }, new Set)
+    this.cart = [...filter]
     return this.save();
 }
 

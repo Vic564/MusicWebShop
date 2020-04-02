@@ -7,6 +7,7 @@ const checkOutRoute = require('../routes/checkoutRoute');
 const productRoute = require('../routes/productRoute');
 const errorRoute = require('../routes/errorRoute');
 const cookieParser = require('cookie-parser');
+const orderRoute = require('../routes/orderRoute');
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.set('view engine', 'ejs');
 
 app.use(cookieParser());
 
+app.use(express.json());
+
 app.use(checkOutRoute);
 
 app.use(adminRoute);
@@ -33,6 +36,8 @@ app.use(adminRoute);
 app.use(userRoute);
 
 app.use(productRoute);
+
+app.use(orderRoute);
 
 app.use(errorRoute);
 

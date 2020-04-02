@@ -37,6 +37,11 @@ const spotify = {
     }
 }
 
+const STRIPE = {
+    public: process.env.STRIPE_PUBLIC || 'needsconfig',
+    secret: process.env.STRIPE_SECRET || 'needsconfig'
+}
+
 const mailkey = {
     mailkey: process.env.SEND_GRID_KEY || 'needsconfig'
 }
@@ -50,5 +55,4 @@ const admin = {
     adminPassword: process.env.ADMIN_PASSWORD || 'admin'
 }
 
-
-module.exports = { MONGODB, spotify, mailkey, tokenkey, admin, PORT };  
+module.exports = { MONGODB, spotify, mailkey, tokenkey, admin, PORT, STRIPE };  

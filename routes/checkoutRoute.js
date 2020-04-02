@@ -1,28 +1,43 @@
 const express = require('express');
 const router = express.Router();
 const { ROUTE, VIEW } = require('../constant');
-const UserModel = require("../model/user")
-const verifyToken = require("./verifyToken")
+const { STRIPE } = require('../config/config')
+const UserModel = require('../model/user');
+const verifyToken = require('./verifyToken');
+const stripe = require('stripe')(STRIPE.secret);
+const Order = require('../model/order');
 
 router.get(ROUTE.checkout, verifyToken, async (req, res) => {
     if (verifyToken) {
-        const showUserInfo = await UserModel.findOne({ _id: req.body.userInfo._id })
-            .populate('wishlist.productId', {
-                artist: 1,
-                album: 1,
-                price: 1
+        const cart = await getCart(req.body.userInfo._id);
+        console.log(cart)
+        /*
+        stripe.checkout.session.create({
+            payment_method_types: ['card'],
+            list_items: showUserInfo.cart.forEach(product => {
+                return {
+                    name: product.productId.name,
+                    amount: product.productId.price,
+                }
             })
-        res.status(202).render(VIEW.checkout, { ROUTE, showUserInfo, token: req.cookies.jsonwebtoken ? true : false })
+        })*/
+        res.status(202).render(VIEW.checkout, {
+            ROUTE,
+            cart,
+            showUserInfo: req.body.userInfo,
+            stripePublicKey: STRIPE.public,
+            token: req.cookies.jsonwebtoken ? true : false
+        })
     } else {
         return res.status(202).render(VIEW.checkout, {
             ROUTE,
-            showUserInfo: "empty cart",
+            showUserInfo: 'empty cart',
             token: req.cookies.jsonwebtoken ? true : false
         })
     }
 })
 
-router.post(ROUTE.checkout, verifyToken, (req, res) => {
+router.post(ROUTE.checkout, verifyToken, async (req, res) => {
     const customer = {
         fName: req.body.fName,
         lName: req.body.lName,
@@ -35,5 +50,7 @@ router.post(ROUTE.checkout, verifyToken, (req, res) => {
         token: req.cookies.jsonwebtoken ? true : false
     });
 })
+
+const getCart = async (userId) => Order.find({user: userId}).populate("user product")
 
 module.exports = router;

@@ -6,18 +6,21 @@
     </div>
     <div class="shoppingcart-container">
         <div class="wishlist-shoppingcart-continer">
-            <% showUserInfo.wishlist.forEach( (obj)=> { %>
+            <% 
+            let totalPrice = 0;
+            cart.forEach(obj => { %>
             <div class="wishlist-shoppingcart-innercontiner">
                 <div class="product-img"> </div>
                 <div class="wishlist-shoppingcart-info">
-                    <div class="wishlist-shoppingcart-item ">Album: <%= obj.productId.album %> </div>
-                    <div class="wishlist-shoppingcart-item ">Artist: <%= obj.productId.artist %> </div>
-                    <div class="wishlist-shoppingcart-item ">Album ID: <%= obj.productId._id %> </div>
-                    <div class="wishlist-shoppingcart-item ">Pris: <%= obj.productId.price %> SEK</div>
+                    <div class="wishlist-shoppingcart-item">Album: <%= obj.product.album %> </div>
+                    <div class="wishlist-shoppingcart-item">Artist: <%= obj.product.artist %> </div>
+                    <div class="wishlist-shoppingcart-item">Antal: <%= obj.quantity %> </div>
+                    <div class="wishlist-shoppingcart-item">Pris: <%= obj.product.price %> SEK</div>
+                    <% totalPrice += obj.product.price * obj.quantity %>
                 </div>
             </div>
             <% }); %>
-
+            <div class="wishlist-shoppingcart-total">Totalt: <%= totalPrice %></div>
         </div>
     </div>
     <div class="checkout-payment-container">
