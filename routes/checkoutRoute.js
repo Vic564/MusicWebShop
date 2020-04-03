@@ -21,8 +21,8 @@ router.get(ROUTE.checkout, verifyToken, async (req, res) => {
                 }
             }),
             customer_email: req.body.userInfo.email,
-            success_url: req.protocol +   "://" + req.get("Host") +  ROUTE.confirmation,
-            cancel_url: req.protocol +   "://" + req.get("Host") +  ROUTE.error + '?errmsg=Stripe error'
+            success_url: `${req.protocol}://${req.get('Host')}${ROUTE.confirmation}`,
+            cancel_url: `${req.protocol}://${req.get('Host')}${ROUTE.error}?errmsg=Stripe error`
         });
         const stripeVar = {
             publicKey: STRIPE.public,
