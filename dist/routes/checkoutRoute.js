@@ -16,27 +16,41 @@ var stripe = require('stripe')(STRIPE.secret);
 var Order = require('../model/order');
 
 router.get(ROUTE.checkout, verifyToken, async function (req, res) {
-    if (verifyToken) {
+    try {
         var cart = await getCart(req.body.userInfo._id);
-        console.log(cart);
-        /*
-        stripe.checkout.session.create({
-            payment_method_types: ['card'],
-            list_items: showUserInfo.cart.forEach(product => {
+        var session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: cart.map(function (item) {
                 return {
-                    name: product.productId.name,
-                    amount: product.productId.price,
-                }
-            })
-        })*/
-        res.status(202).render(VIEW.checkout, {
+                    name: item.product.album,
+                    amount: item.product.price * 100,
+                    quantity: item.quantity,
+                    currency: "sek"
+                };
+            }),
+            customer_email: req.body.userInfo.email,
+            success_url: req.protocol + "://" + req.get("Host") + ROUTE.confirmation,
+            cancel_url: req.protocol + "://" + req.get("Host") + ROUTE.error + '?errmsg=Stripe error'
+        });
+        var stripeVar = {
+            publicKey: STRIPE.public,
+            sessionId: session.id
+        };
+        var totalAmount = session.display_items.map(function (item) {
+            return item.amount;
+        }).reduce(function (acc, cur) {
+            return acc + cur;
+        }) / 100;
+        return res.status(202).render(VIEW.checkout, {
             ROUTE: ROUTE,
             cart: cart,
             showUserInfo: req.body.userInfo,
-            stripePublicKey: STRIPE.public,
+            stripeVar: stripeVar,
+            totalAmount: totalAmount,
             token: req.cookies.jsonwebtoken ? true : false
         });
-    } else {
+    } catch (e) {
+        console.log(e);
         return res.status(202).render(VIEW.checkout, {
             ROUTE: ROUTE,
             showUserInfo: 'empty cart',
@@ -46,6 +60,17 @@ router.get(ROUTE.checkout, verifyToken, async function (req, res) {
 });
 
 router.post(ROUTE.checkout, verifyToken, async function (req, res) {
+    try {
+        /* Fungerar inte...
+        await clearCart(req.body.userInfo._id);*/
+        res.redirect(ROUTE.confirmation);
+    } catch (e) {
+        console.error(e);
+        res.redirect(ROUTE.error);
+    }
+});
+
+router.get(ROUTE.confirmation, verifyToken, async function (req, res) {
     var customer = {
         fName: req.body.fName,
         lName: req.body.lName,
@@ -61,6 +86,10 @@ router.post(ROUTE.checkout, verifyToken, async function (req, res) {
 
 var getCart = async function getCart(userId) {
     return Order.find({ user: userId }).populate("user product");
+};
+
+var clearCart = async function clearCart(userId) {
+    return await Order.deleteMany({ user: userId });
 };
 
 module.exports = router;
