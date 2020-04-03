@@ -6,9 +6,7 @@
     </div>
     <div class="shoppingcart-container">
         <div class="wishlist-shoppingcart-continer">
-            <% 
-            let totalPrice = 0;
-            cart.forEach(obj => { %>
+            <% cart.forEach(obj => { %>
             <div class="wishlist-shoppingcart-innercontiner">
                 <div class="product-img"> </div>
                 <div class="wishlist-shoppingcart-info">
@@ -16,38 +14,23 @@
                     <div class="wishlist-shoppingcart-item">Artist: <%= obj.product.artist %> </div>
                     <div class="wishlist-shoppingcart-item">Antal: <%= obj.quantity %> </div>
                     <div class="wishlist-shoppingcart-item">Pris: <%= obj.product.price %> SEK</div>
-                    <% totalPrice += obj.product.price * obj.quantity %>
                 </div>
             </div>
             <% }); %>
-            <div class="wishlist-shoppingcart-total">Totalt: <%= totalPrice %></div>
+            <div class="wishlist-shoppingcart-total">Totalt: <%= totalAmount %></div>
+            <div class="checkout-button-container">
+                <button id="checkout-button" type="submit">BESTÄLL</button>
+            </div>
         </div>
-    </div>
-    <div class="checkout-payment-container">
-        <form action="<%= ROUTE.checkout %>" method="POST">
-            <h2>Betalning</h2>
-            <div class="checkout-user-container">
-                <input type="number" placeholder="Kortnummer">
-            </div>
-            <h2>Leverans</h2>
-            <div class="checkout-user-container">
-                <label>Förnamn</label>
-                <input type="text" name="fName" value="<%=showUserInfo.firstName%>" size=30>
-                <label>Efternamn</label>
-                <input type="text" name="lName" value="<%=showUserInfo.lastName%>" size=30>
-                <label>Adress</label>
-                <input type="text" name="address" value="<%=showUserInfo.address%>" size=30>
-                <label>Stad</label>
-                <input type="text" name="city">
-                <label>Postnummer</label>
-                <input type="text" name="pcode">
-                <label>E-mail</label>
-                <input type="email" name="email" value="<%=showUserInfo.email%>">
-                <div class="checkout-button-container">
-                    <button type="submit">BESTÄLL</button>
-                </div>
-            </div>
-        </form>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script>
+            const stripe = Stripe('<%= stripeVar.publicKey %>');
+            document.querySelector('#checkout-button').addEventListener('click', () => {
+                stripe.redirectToCheckout({
+                    sessionId: '<%= stripeVar.sessionId %>'
+                })
+            });
+        </script>
     </div>
 </main>
 <%- include ("footer.ejs") %>
