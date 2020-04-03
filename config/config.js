@@ -13,7 +13,7 @@ const dbPassword = process.env.DBPASSWORD || 'test';
 const dbHostname = process.env.DBHOSTNAME || 'localhost';
 const dbName = process.env.DBNAME || 'todolistapp';
 const dbQuery = process.env.DBQUERY || 'retryWrites=true&w=majority';
-const dbAuth = (process.env.DBAUTH == 'true') ? true : false;
+const dbAuth = process.env.DBAUTH == 'true';
 
 const MONGODB = {
     connection: dbAuth

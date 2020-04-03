@@ -18,17 +18,9 @@ var schemaOrder = new Schema({
         type: Number,
         required: true,
         default: 1
-    },
-    created: {
-        type: Date,
-        required: true,
-        default: Date.now
-    },
-    modified: {
-        type: Date,
-        required: true,
-        default: Date.now
     }
+}, {
+    timestamps: true
 });
 
 var Order = mongoose.model("Order", schemaOrder);

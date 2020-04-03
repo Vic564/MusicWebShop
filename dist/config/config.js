@@ -15,7 +15,7 @@ var dbPassword = process.env.DBPASSWORD || 'test';
 var dbHostname = process.env.DBHOSTNAME || 'localhost';
 var dbName = process.env.DBNAME || 'todolistapp';
 var dbQuery = process.env.DBQUERY || 'retryWrites=true&w=majority';
-var dbAuth = process.env.DBAUTH == 'true' ? true : false;
+var dbAuth = process.env.DBAUTH == 'true';
 
 var MONGODB = {
     connection: dbAuth ? mongodb + '://' + dbUser + ':' + dbPassword + '@' + dbHostname + '/' + dbName + '?' + dbQuery : mongodb + '://' + dbHostname + '/' + dbName + '?' + dbQuery,

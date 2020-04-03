@@ -39,12 +39,6 @@ var schemaUser = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product"
         }
-    }],
-    cart: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product"
-        }
     }]
 });
 
@@ -56,17 +50,6 @@ schemaUser.methods.addToWishlist = function (product) {
         return !this.has("" + productId) && this.add("" + productId);
     }, new Set());
     this.wishlist = [].concat(_toConsumableArray(filter));
-    return this.save();
-};
-
-schemaUser.methods.addToCart = function (product) {
-    this.cart.push({ productId: product._id });
-    var filter = this.cart.filter(function (_ref2) {
-        var productId = _ref2.productId;
-
-        return !this.has("" + productId) && this.add("" + productId);
-    }, new Set());
-    this.cart = [].concat(_toConsumableArray(filter));
     return this.save();
 };
 
