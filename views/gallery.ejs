@@ -20,7 +20,12 @@
                             productId: id
                         })
                     });
-                    console.log(await response.json());
+                    const jsonRes = await response.json()
+                    if (jsonRes.answer === 'ok') {
+                        alert('Varan lades till!')
+                    } else {
+                        alert('Du måste vara inloggad!')
+                    }
                 } catch (e) {
                     console.error(e);
                 }

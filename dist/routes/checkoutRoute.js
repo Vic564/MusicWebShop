@@ -29,8 +29,8 @@ router.get(ROUTE.checkout, verifyToken, async function (req, res) {
                 };
             }),
             customer_email: req.body.userInfo.email,
-            success_url: req.protocol + "://" + req.get("Host") + ROUTE.confirmation,
-            cancel_url: req.protocol + "://" + req.get("Host") + ROUTE.error + '?errmsg=Stripe error'
+            success_url: req.protocol + '://' + req.get('Host') + ROUTE.confirmation,
+            cancel_url: req.protocol + '://' + req.get('Host') + ROUTE.error + '?errmsg=Stripe error'
         });
         var stripeVar = {
             publicKey: STRIPE.public,
