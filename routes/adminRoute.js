@@ -36,13 +36,7 @@ router.post(ROUTE.admin, verifyAdminToken, (req, res) => {
             if (!error && response.statusCode === 200) {
                 const spotifyToken = body.access_token;
                 const options = {
-                    url: `https://api.spotify.com/v1/search?\
-                    q=artist:${artistSearchValue}\
-                    &type=${config.spotify.query.type}\
-                    &album_type=${config.spotify.query.albumType}\
-                    &offset=${config.spotify.query.offset}\
-                    &limit=${config.spotify.query.limit}`
-                    .replace(/ /g, ''),
+                    url: `https://api.spotify.com/v1/search?q=artist:${artistSearchValue}&type=${config.spotify.query.type}&album_type=${config.spotify.query.albumType}&offset=${config.spotify.query.offset}&limit=${config.spotify.query.limit}`,
                     headers: {
                         Authorization: 'Bearer ' + spotifyToken,
                         Accept: 'application/json',
