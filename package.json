@@ -50,7 +50,7 @@
     "chai": "^4.2.0",
     "cypress": "^4.3.0",
     "heroku": "^7.39.2",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.2",
     "npm-check-updates": "^4.1.1",
     "rimraf": "^3.0.2",
